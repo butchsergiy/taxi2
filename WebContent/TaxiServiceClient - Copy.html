@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="generator" content="HTML Tidy for Windows (vers 15 August 2007), see www.w3.org">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" type="text/css">
+<script src="http://code.jquery.com/jquery-2.0.3.min.js" type="text/javascript">
+</script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js" type="text/javascript">
+</script>
+<meta charset="UTF-8">
+<title>TAXI SERVICE</title>
+
+<style type="text/css">
+table.gridtable {
+        font-family: verdana, arial, sans-serif;
+        font-size: 12px;
+        color: #222222;
+        border-width: 1px;
+        border-color: #555555;
+        border-collapse: collapse;
+}
+table.gridtable th {
+        border-width: 2px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #555555;
+        background-color: #dedede;
+}
+table.gridtable td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #555555;
+        background-color: #ffffff;
+}
+</style>
+
+<script src="Scripts/jquery-2.1.4.min.js" type="text/javascript"></script>
+<script src="Scripts/jquery.ui.core.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+var ordersArray = new Array();
+function Order(id,dateAndTime,addr1,addr2,addr34, distance, orderCost, customerPhone, customerName, carNumber,carDriver,isDone){
+   this.id = id;
+   this.dateAndTime = dateAndTime;
+   this.addr1 = addr1;
+   this.addr2 = addr2;  
+   this.addr34 = addr34;        
+   this.distance = distance;    
+   this.orderCost = orderCost;
+   this.customerPhone = customerPhone;
+   this.customerName = customerName;
+   this.carNumber = carNumber;
+   this.carDriver = carDriver;  
+   this.isDone = isDone;
+}
+
+
+$(document).ready(onReady);
+$(function() {
+        });
+        
+        
+function onReady(){
+loadInitData();    
+        }
+        
+        function Load(){
+          var listTableBody = $("#listTableBody");
+          listTableBody.empty();
+               loadInitData();
+              for(i=0;i<ordersArray.length;i++){
+              order = ordersArray[i];
+				var row = $("<tr><\/tr>");
+				var id = $("<td>"+order.id+"<\/td>");
+				var dateAndTime = $("<td>"+order.dateAndTime+"<\/td>");  
+				var addr1 = $("<td>"+order.addr1+"<\/td>");
+				var addr2 = $("<td>"+order.addr2+"<\/td>");
+				var addr34 = $("<td>"+order.addr34+"<\/td>");
+				var distance = $("<td>"+order.distance+"<\/td>");
+				var orderCost = $("<td>"+order.orderCost+"<\/td>");
+				var customerPhone = $("<td>"+order.customerPhone+"<\/td>");
+				var customerName = $("<td>"+order.customerName+"<\/td>");
+				var carNumber = $("<td>"+order.carNumber+"<\/td>");
+				var carDriver = $("<td>"+order.carDriver+"<\/td>");
+				var isDone = $("<td>"+order.isDone+"<\/td>");
+				var op = $("<td><\/td>");
+              
+				id.appendTo(row);
+					dateAndTime.appendTo(row);
+					addr1.appendTo(row);
+					addr2.appendTo(row);
+					addr34.appendTo(row);
+					distance.appendTo(row);
+					orderCost.appendTo(row);
+					customerPhone.appendTo(row);
+					customerName.appendTo(row);
+					carNumber.appendTo(row);
+					carDriver.appendTo(row);
+					isDone.appendTo(row);
+					op.appendTo(row);
+
+                                 
+              row.appendTo(listTableBody);
+          }
+          $("#Listiv").show();  
+
+        }
+        
+
+        
+        
+        
+        function Create(){
+                var id = "0";
+                var dateAndTime = "0";
+                var addr1 = $("#createAddr1").val();
+                var addr2 = $("#createAddr2").val();
+                var addr34 = $("#createAddr34").val();
+                var distance = $("#createDistance").val();
+                var orderCost = $("#createOrderCost").val();
+                var customerPhone = $("#createCustomerPhone").val();
+                var customerName = $("#createCustomerName").val();
+                var carNumber = $("#createCarNumber").val();
+                var carDriver = $("#createCarDriver").val();
+                var isDone = "";
+                var data1 = formToData(id,dateAndTime,addr1,addr2,addr34,distance,orderCost,customerPhone,customerName,carNumber, carDriver,isDone );
+                console.log(data1);
+                
+                $.ajax({
+                        type: "POST",
+                        contentType:"application/json",
+                        url: "rest/taxiservice/orderc",
+                        dataType:'json',
+                        data:data1,
+                        
+                        success: function (data, textStatus, xhr) {
+                                console.log(textStatus);
+                                alert(textStatus);
+                        },
+                        error: function (data1, textStatus, errorThrown) {
+                                console.log(textStatus);
+                                alert(data1.responseText);      
+                                                                
+                        }
+                });
+        }               
+        
+        function loadInitData(){
+           $.ajax({
+                   type: "GET",
+                   contentType:"application/json",
+                   url: "rest/taxiservice/orders",
+                   dataType: 'json',
+                   cache: false,
+                   success: function (data, textStatus, xhr) {
+                          ordersArray = $.map(data, function(el) { return el; });
+                   },
+                   error: function (data, textStatus, errorThrown) {
+                           console.log(textStatus)
+                   }
+                });
+        }
+
+           
+        function formToData(id,dateAndTime,addr1,addr2,addr34,distance,orderCost,customerPhone,customerName,carNumber,carDriver,isDone){
+          return JSON.stringify({
+                  "id":id,
+                  "dateAndTime":dateAndTime,
+                  "addr1":addr1,
+                  "addr2":addr2,
+                  "addr34":addr34,
+                  "distance":distance,
+                  "orderCost":orderCost,
+                  "customerPhone":customerPhone,
+                  "customerName":customerName,
+                  "carNumber":carNumber,
+                  "carDriver":carDriver,
+                  "isDone":isDone                         
+                });
+        }
+
+
+</script>
+</head>
+<body>
+<div data-role="page" id="page-1">
+<div data-role="header">
+<h1>TAXI SERVICE CLIENT</h1>
+</div>
+<div data-role="content">
+<div data-role="tabs" id="tabs-1">
+<div data-role="navbar">
+<ul>
+<li><a href="#tab-1a" data-ajax="false">Create Order</a></li>
+<li><a href="#tab-1b" data-ajax="false">Read Orders</a></li>
+<li><a href="#tab-1c" data-ajax="false">Read / Update Order</a></li>
+<li><a href="#tab-1d" data-ajax="false">Delite Order</a></li>
+</ul>
+</div>
+<div id="tab-1a" class="ui-body-d ui-content">
+<h4>Tab 1</h4>
+<div class="ui-field-contain"><label for="addr1">*addr1:</label><input name="addr1" id="createAddr1" data-clear-btn="true" value="" type="text"> <label for="addr2">*addr2:</label><input name="addr2" id="createAddr2" data-clear-btn="true" value="" type="text"> <label for="addr34">addr34:</label><input name="addr34" id="createAddr34" data-clear-btn="true" value="" type="text"> <label for="distance">*distance (digits):</label><input name="distance" id="createDistance" data-clear-btn="true" value="" type="text"> <label for="orderCost">*orderCost (digits):</label><input name="orderCost" id="createOrderCost" data-clear-btn="true" value="" type="text"> <label for="CustomerPhone">*CustomerPhone (7 digits):</label><input name="CustomerPhone" id="createCustomerPhone" data-clear-btn="true" value="" type="text"> <label for="CustomerName">CustomerName:</label><input name="CustomerName" id="createCustomerName" data-clear-btn="true" value="" type="text"> <label for="CarNumber">CarNumber:</label><input name="CarNumber" id="createCarNumber" data-clear-btn="true" value="" type="text"> <label for="CarDriver">CarDriver:</label><input name="CarDriver" id="createCarDriver" data-clear-btn="true" value="" type="text"> <label for="CarDriver">(*) - Must be entered.</label></div>
+<button style="background-color:lightgreen" onclick="Create()">Save Order</button></div>
+<div id="tab-1b" class="ui-body-d ui-content">
+<h4>Tab 2</h4>
+<button style="background-color:lightgreen" onclick="Load()">Load Orders</button>
+<div style="width: 450px; float: left;" id="Listiv" hidden="true">
+<table class="gridtable">
+<thead>
+<tr>
+<td>Id</td>
+<td>dateAndTime</td>
+<td>addr1</td>
+<td>addr2</td>
+<td>addr34</td>
+<td>distance</td>
+<td>orderCost</td>
+<td>customerPhone</td>
+<td>customerName</td>
+<td>carNumber</td>
+<td>carDriver</td>
+<td>isDone</td>
+<td>op</td>
+</tr>
+</thead>
+<tbody id="listTableBody"></tbody>
+</table>
+</div>
+</div>
+<div id="tab-1c" class="ui-body-d ui-content">
+<h4>Tab 3</h4>
+</div>
+<div id="tab-1d" class="ui-body-d ui-content">
+<h4>Tab 4</h4>
+</div>
+</div>
+</div>
+<div data-role="footer">
+<h5>TAXI SERVICE CLIENT. 2015-07-03</h5>
+<div style="width: 450px; float: left;" id="Listiv" hidden="true">
+<table class="gridtable">
+<thead>
+<tr>
+<td>Id</td>
+<td>dateAndTime</td>
+<td>addr1</td>
+<td>addr2</td>
+<td>addr34</td>
+<td>distance</td>
+<td>orderCost</td>
+<td>customerPhone</td>
+<td>customerName</td>
+<td>carNumber</td>
+<td>carDriver</td>
+<td>isDone</td>
+<td>op</td>
+</tr>
+</thead>
+<tbody id="listTableBody"></tbody>
+</table>
+</div>
+</div>
+<div data-role="panel" id="panel-1">
+<ul data-role="listview" id="listview-1">
+<li><a href="item1.html">Item 1</a></li>
+<li><a href="item2.html">Item 2</a></li>
+<li><a href="item3.html">Item 3</a></li>
+</ul>
+</div>
+</div>
+</body>
+</html>

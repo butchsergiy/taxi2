@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.edvantis.jt.case14.model.workers.Worker" table="workersdb" catalog="taxiservice" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="name" />
+        </property>
+        <property name="position" type="java.lang.String">
+            <column name="position" />
+        </property>
+        <property name="birthDate" type="java.sql.Date">
+            <column name="birthDate" />
+        </property>
+        <property name="accessLevel" type="java.lang.Integer">
+            <column name="accessLevel" />
+        </property>
+        <property name="carNumber" type="java.lang.String">
+            <column name="carNumber" />
+        </property>
+        <property name="password" type="java.lang.String">
+            <column name="password" />
+        </property>
+        <property name="logget" type="java.lang.Boolean">
+            <column name="logget" />
+        </property>
+    </class>
+</hibernate-mapping>

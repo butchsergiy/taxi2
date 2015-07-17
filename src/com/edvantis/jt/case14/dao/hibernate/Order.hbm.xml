@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 19, 2015 1:52:46 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.edvantis.jt.case14.model.data.Order" table="ordersdb" catalog="taxiservice" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>		
+        <property name="dateAndTime" type="java.sql.Timestamp">
+            <column name="dateAndTime" />
+        </property>
+        <property name="addr1" type="java.lang.String">
+            <column name="addr1" />
+        </property>
+        <property name="addr2" type="java.lang.String">
+            <column name="addr2" />
+        </property>
+        <property name="addr34" type="java.lang.String">
+            <column name="addr34" />
+        </property>
+        <property name="distance" type="float">
+            <column name="distance" />
+        </property>
+        <property name="orderCost" type="float">
+            <column name="orderCost" />
+        </property>
+        <property name="customerPhone" type="java.lang.String">
+            <column name="customerPhone" />
+        </property>
+        <property name="customerName" type="java.lang.String">
+            <column name="customerName" />
+        </property>
+        <property name="carNumber" type="java.lang.String">
+            <column name="carNumber" />
+        </property>
+        <property name="carDriver" type="java.lang.String">
+            <column name="carDriver" />
+        </property>
+        <property name="isDone" type="java.lang.Boolean">
+            <column name="isDone" />
+        </property>
+    </class>
+</hibernate-mapping>

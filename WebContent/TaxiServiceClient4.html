@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TAXI SERVICE </title>
+<style type="text/css">
+
+table.gridtable {
+	font-family: verdana, arial, sans-serif;
+	font-size: 12px;
+	color: #222222;
+	border-width: 1px;
+	border-color: #555555;
+	border-collapse: collapse;
+}
+table.gridtable th {
+	border-width: 2px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #555555;
+	background-color: #dedede;
+}
+table.gridtable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #555555;
+	background-color: #ffffff;
+}
+</style>
+
+<script src="Scripts/jquery-2.1.4.min.js"></script>
+<script src="Scripts/jquery.ui.core.js"></script>
+
+
+<script>
+var ordersArray = new Array();
+function Order(id,dateAndTime,addr1,addr2,addr34, distance, orderCost, customerPhone, customerName, carNumber,carDriver,isDone){
+   this.id = id;
+   this.dateAndTime = dateAndTime;
+   this.addr1 = addr1;
+   this.addr2 = addr2;	
+   this.addr34 = addr34;	
+   this.distance = distance;	
+   this.orderCost = orderCost;
+   this.customerPhone = customerPhone;
+   this.customerName = customerName;
+   this.carNumber = carNumber;
+   this.carDriver = carDriver;	
+   this.isDone = isDone;
+}
+$(document).ready(onReady);
+$(function() {
+	});
+	
+	
+function onReady(){
+loadInitData();	   
+	
+		$("#CreateLink").on("click",function(){
+          $("#CreateDiv").show();	
+          $("#Listiv").hide();
+          $("#DeleteDiv").hide();	
+          $("#EditDiv").hide();		  
+        })   
+	
+        $("#ListLink").on("click",function(){
+          var listTableBody = $("#listTableBody");
+          listTableBody.empty();
+	      for(i=0;i<ordersArray.length;i++){
+              order = ordersArray[i];
+        	  var row = $("<tr></tr>");
+        	  var id = $("<td>"+order.id+"</td>");
+              var dateAndTime = $("<td>"+order.dateAndTime+"</td>");  
+			  var addr1 = $("<td>"+order.addr1+"</td>");
+			  var addr2 = $("<td>"+order.addr2+"</td>");
+			  var addr34 = $("<td>"+order.addr34+"</td>");
+			  var distance = $("<td>"+order.distance+"</td>");
+			  var orderCost = $("<td>"+order.orderCost+"</td>");
+			  var customerPhone = $("<td>"+order.customerPhone+"</td>");
+			  var customerName = $("<td>"+order.customerName+"</td>");
+			  var carNumber = $("<td>"+order.carNumber+"</td>");
+			  var carDriver = $("<td>"+order.carDriver+"</td>");
+			  var isDone = $("<td>"+order.isDone+"</td>");
+              
+              id.appendTo(row);
+			  dateAndTime.appendTo(row);
+			  addr1.appendTo(row);
+			  addr2.appendTo(row);
+			  addr34.appendTo(row);
+			  distance.appendTo(row);
+			  orderCost.appendTo(row);
+			  customerPhone.appendTo(row);
+			  customerName.appendTo(row);
+			  carNumber.appendTo(row);
+			  carDriver.appendTo(row);
+			  isDone.appendTo(row);
+			         
+    	      row.appendTo(listTableBody);
+          }
+          $("#Listiv").show();	
+
+        })
+        
+		
+		
+		
+		
+		$('#Create').on("click",function(){
+				var id = "0";
+				var dateAndTime = "0";
+				var addr1 = $("#createaddr1").val();
+				var addr2 = $("#createaddr2").val();
+				var addr34 = $("#createaddr34").val();
+				var distance = $("#createdistance").val();
+				var orderCost = $("#createorderCost").val();
+				var customerPhone = $("#createcustomerPhone").val();
+				var customerName = $("#createcustomerName").val();
+				var carNumber = $("#createcarNumber").val();
+				var carDriver = $("#createcarDriver").val();
+				var isDone = $("#createisDone").val();
+				var data1 = formToData(id,dateAndTime,addr1,addr2,addr34,distance,orderCost,customerPhone,customerName,carNumber, carDriver,isDone );
+				console.log(data1);
+				
+				$.ajax({
+	                type: "POST",
+	                contentType:"application/json",
+	                url: "rest/taxiservice/orderc",
+				    dataType:'json',
+					data:data1,
+	                
+	                success: function (data, textStatus, xhr) {
+	                	console.log(textStatus);
+	                },
+	                error: function (data, textStatus, errorThrown) {
+	                    console.log(textStatus)
+	                }
+	            });
+			});		
+			
+		<!-- {"id":"","dateAndTime":"","addr1":"dfd","addr2":"dfdf","addr34":"dfd","distance":"333","orderCost":"33","customerPhone":"33333","customerName":"dfdfd","carNumber":"dfdfd","carDriver":"dfsdf","isDone":""}-->
+		
+	
+		
+		
+
+	}
+       function loadInitData(){
+    	   $.ajax({
+               type: "GET",
+               contentType:"application/json",
+               url: "rest/taxiservice/orders",
+               dataType: 'json',
+               cache: false,
+               success: function (data, textStatus, xhr) {
+				  ordersArray = $.map(data, function(el) { return el; });
+               },
+               error: function (data, textStatus, errorThrown) {
+                   console.log(textStatus)
+               }
+           });
+       }
+	
+	
+	   function formToData(id,dateAndTime,addr1,addr2,addr34,distance,orderCost,customerPhone,customerName,carNumber,carDriver,isDone){
+          return JSON.stringify({
+              "id":id,
+              "dateAndTime":dateAndTime,
+              "addr1":addr1,
+			  "addr2":addr2,
+			  "addr34":addr34,
+			  "distance":distance,
+			  "orderCost":orderCost,
+			  "customerPhone":customerPhone,
+			  "customerName":customerName,
+			  "carNumber":carNumber,
+			  "carDriver":carDriver,
+			  "isDone":isDone			  
+          });
+       }
+
+       
+	          function sendData(ddata){
+    	   $.ajax({
+               type: "POST",
+               contentType:"application/json",
+               url: "rest/taxiservice/orderc",
+               dataType: 'json',
+			   data:ddata,
+               cache: false,
+               success: function (data, textStatus, xhr) {
+				  ordersArray = $.map(data, function(el) { return el; });
+               },
+               error: function (data, textStatus, errorThrown) {
+                   console.log(textStatus)
+               }
+           });
+       }
+	   
+	   
+	   
+	   
+      
+       
+</script>
+
+
+
+</head>
+<body>
+	<h1 style="color: red">TAXI Service  / v 2015-06-26  /</h1>
+	<ul>
+		<li><a href="#" id="ListLink">ORDER - List </a></li>
+		<li><a href="#" id="CreateLink">ORDER - Create </a></li>
+		
+	</ul>
+	
+	
+	
+	<div style="width: 450px; float: left;" id="Listiv" hidden="true">
+		<table class="gridtable">
+			<thead>
+				<tr>
+					<td>Id</td>
+					<td>dateAndTime</td>
+					<td>addr1</td>
+					<td>addr2</td>
+					<td>addr34</td>
+					<td>distance</td>
+					<td>orderCost</td>
+					<td>customerPhone</td>
+					<td>customerName</td>
+					<td>carNumber</td>
+					<td>carDriver</td>
+					<td>isDone</td>
+				</tr>
+			</thead>
+			<tbody id="listTableBody">
+			</tbody>
+		</table>
+	</div>
+
+	
+	<div style="width: 600px; float: left;" id="CreateDiv" hidden="true">
+		<fieldset>
+			<legend>Create a new Order</legend>
+
+			<div style="width: 100px; float: left; margin-left: 5px;">
+				<label>addr1 :</label>
+			</div>
+			<div style="width: 400px; float: left;">
+				<input type='text' id='createaddr1' size='25'>
+			</div>
+			<div style="width: 100px; float: left; margin-left: 5px;">
+				<label>addr2 :</label>
+			</div>
+			<div style="width: 400px; float: left;">
+				<input type='text' id='createaddr2' size='25'>
+			</div>
+			<div style="width: 100px; float: left; margin-left: 5px;">
+				<label>addr34 :</label>
+			</div>
+			<div style="width: 400px; float: left;">
+				<input type='text' id='createaddr34' size="25">
+			</div>
+			<div style="width: 100px; float: left; margin-left: 5px;">
+				<label>distance :</label>
+			</div>
+			<div style="width: 400px; float: left;">
+				<input type='text' id='createdistance' size="10">
+			</div>
+			<div style="width: 100px; float: left; margin-left: 5px;">
+				<label>orderCost :</label>
+			</div>
+			<div style="width: 400px; float: left;">
+				<input type='text' id='createorderCost' size='10'>
+			</div>
+			<div style="width: 100px; float: left; margin-left: 5px;">
+				<label>customerPhone :</label>
+			</div>
+			<div style="width: 400px; float: left;">
+				<input type='text' id='createcustomerPhone' size='25'>
+			</div>
+			<div style="width: 100px; float: left; margin-left: 5px;">
+				<label>customerName :</label>
+			</div>
+			<div style="width: 400px; float: left;">
+				<input type='text' id='createcustomerName' size='25'>
+			</div>
+			<div style="width: 100px; float: left; margin-left: 5px;">
+				<label>carNumber :</label>
+			</div>
+			<div style="width: 400px; float: left;">
+				<input type='text' id='createcarNumber' size='25'>
+			</div>
+			<div style="width: 100px; float: left; margin-left: 5px;">
+				<label>carDriver :</label>
+			</div>
+			<div style="width: 400px; float: left;">
+				<input type='text' id='createcarDriver' size='25'>
+			</div>
+			<div style="width: 100px; float: left; margin-left: 5px;">
+				<label>isDone :</label>
+			</div>
+			<div style="width: 400px; float: left;">
+				<input type='text' id='createisDone' size='10'>
+			</div>
+						
+			<form name="createOrder" method="post" action="rest/list/create"
+				id="createOrder">
+				<div style="float: right;">
+					<input type="button" value="Create"  id="Create">
+					<input type="button" value="Clear" >
+				</div>
+			</form>
+		</fieldset>
+	</div>
+	
+	
+	
+
+
+</body>
+</html>
