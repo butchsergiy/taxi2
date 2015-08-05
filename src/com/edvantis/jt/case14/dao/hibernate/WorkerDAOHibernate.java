@@ -19,18 +19,12 @@ import com.edvantis.jt.case14.model.workers.WorkersDB;
 
 public class WorkerDAOHibernate extends WorkerDAOabstract {
 
-	private static WorkerDAOHibernate singleton;
-
-	private WorkerDAOHibernate() {
-	}
-
-	public static synchronized WorkerDAOHibernate getReference() {
-		if (singleton == null) {
-			singleton = new WorkerDAOHibernate();
-		}
-		return singleton;
-	}
-
+	// Singleton creation with Initialization-on-demand and classHolder idiom
+	private WorkerDAOHibernate(){}		
+	private static class SingletonHolder{private static final WorkerDAOHibernate INSTANCE = new WorkerDAOHibernate();}
+	public static WorkerDAOHibernate getReference(){return SingletonHolder.INSTANCE;}	
+	
+	
 	WorkersDB ordersDB0 = WorkersDB.getReference();
 
 	private static final Log log = LogFactory.getLog(WorkerDAOHibernate.class);

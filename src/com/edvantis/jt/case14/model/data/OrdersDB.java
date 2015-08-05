@@ -2,6 +2,7 @@ package com.edvantis.jt.case14.model.data;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import com.edvantis.jt.case14.exceptions.OrderException;
 import com.edvantis.jt.case14.validator.OrderValidator;
 
@@ -9,33 +10,28 @@ import com.edvantis.jt.case14.validator.OrderValidator;
 
 public class OrdersDB implements OrdersDBInterface{
 
-	private static final OrdersDB s=new OrdersDB();			// Singleton 
-	private List<Order> orders=new LinkedList<Order>();
-		
-		
-// constructor  
-	private OrdersDB(){
-		
-	}
+	// Singleton creation with Initialization-on-demand and classHolder idiom
+	private OrdersDB(){}		
+	private static class SingletonHolder{private static final OrdersDB INSTANCE = new OrdersDB();}
+	public static OrdersDB getReference(){return SingletonHolder.INSTANCE;}	
 	
-	public static OrdersDB getReference(){
-		return s;
-	}
-
+	private List<Order> orders=new LinkedList<Order>();
+	
+	
 	
 /*
- *  to do method - for that case when we need to work 
+ * to do method - for that case when we need to work 
  * with data of specific period
  * public OrdersDB getOrdersForPeriod(LocalDate Date1, LocalDate Date2) {..}	
  */
 	
 	public int getOrdersDBSize(){
-		return s.orders.size();
+		return orders.size();
 	}
 	
 	
 	public void resetOrdersDB(){
-		s.orders = new LinkedList<Order>();
+		orders = new LinkedList<Order>();
 	}
 		
 	

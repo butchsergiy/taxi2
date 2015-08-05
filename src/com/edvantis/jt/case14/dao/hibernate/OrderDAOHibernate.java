@@ -25,20 +25,13 @@ import com.edvantis.jt.case14.model.data.OrdersDB;
 
 
 public class OrderDAOHibernate extends OrderDAOabstract {
-
-	private static   OrderDAOHibernate singleton;
 	
-	private OrderDAOHibernate(){		
-	}
-	
-	public static synchronized OrderDAOHibernate getReference(){
-		if (singleton == null) {
-			singleton = new OrderDAOHibernate();
-        }
- 		return singleton;
-	}
-	
+	// Singleton creation with Initialization-on-demand and classHolder idiom
+	private OrderDAOHibernate(){}		
+	private static class SingletonHolder{private static final OrderDAOHibernate INSTANCE = new OrderDAOHibernate();}
+	public static OrderDAOHibernate getReference(){	return SingletonHolder.INSTANCE;}	
 		
+	
 	OrdersDB ordersDB0 = OrdersDB.getReference();
 	
 	private static final Log log = LogFactory.getLog(OrderDAOHibernate.class);

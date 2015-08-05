@@ -9,6 +9,12 @@ import com.edvantis.jt.case14.validator.OrderValidator;
 
 public class OrderDAOJBDC extends OrderDAOabstract {
 
+	// Singleton creation with Initialization-on-demand and classHolder idiom
+	private OrderDAOJBDC(){}		
+	private static class SingletonHolder{private static final OrderDAOJBDC INSTANCE = new OrderDAOJBDC();}
+	public static OrderDAOJBDC getReference(){return SingletonHolder.INSTANCE;}	
+	
+	
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost/taxiservice";
@@ -16,16 +22,6 @@ public class OrderDAOJBDC extends OrderDAOabstract {
 	// Database credentials
 	static final String USER = "root";
 	static final String PASS = "root";
-
-	private static final OrderDAOJBDC singleton = new OrderDAOJBDC(); // Singleton
-
-	private OrderDAOJBDC() {
-
-	}
-
-	public static OrderDAOJBDC getReference() {
-		return singleton;
-	}
 
 	Connection conn = null;
 	Statement stmt = null;
