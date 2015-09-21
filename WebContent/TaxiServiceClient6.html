@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+
+<body>
+ <meta charset="UTF-8"> 
+ 
+<div ng-app="myApp" ng-controller="customersCtrl"> 
+
+<h1>ORDERS3</h1>
+
+<div> filter
+<input type="text" ng-model="filter0">
+</div>
+
+<ol>
+  <li ng-repeat="x in orders | filter:filter0  ">
+    {{ '#'+ x.id + '. date: ' + x.dateAndTime+ '.  addr: ' + x.addr1}}
+  </li>
+</ol>
+
+<div> {{resp}} </div>
+
+<div style="color:red"> <h2> {{respError}} </h2> </div>
+
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('customersCtrl', function($scope, $http) {
+  $http.get('rest/taxiservice/orders')
+  .then(function (response) {
+
+  $scope.orders = response.orders;
+  $scope.resp   = response;
+
+}, function(response){
+$scope.respError   = 'Network Error. Cant connect to the TAXIWEBSERVICE server.' ;
+});});
+</script>
+
+</body>
+</html>

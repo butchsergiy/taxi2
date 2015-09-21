@@ -65,6 +65,10 @@ loadInitData();
         })   
 	
         $("#ListLink").on("click",function(){
+        	 $("#CreateDiv").hide();	
+             $("#Listiv").show();
+             $("#DeleteDiv").hide();	
+             $("#EditDiv").hide();		
           var listTableBody = $("#listTableBody");
           listTableBody.empty();
 	      for(i=0;i<ordersArray.length;i++){
@@ -211,8 +215,7 @@ loadInitData();
 	<h1 style="color: red">TAXI Service  / v 2015-06-26  /</h1>
 	<ul>
 		<li><a href="#" id="ListLink">ORDER - List </a></li>
-		<li><a href="#" id="CreateLink">ORDER - Create </a></li>
-		
+		<li><a href="#" id="CreateLink">ORDER - Create </a></li>		
 	</ul>
 	
 	
