@@ -1,44 +1,85 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta charset="UTF-8"> 
 
 <script src= "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-
-<body>
- <meta charset="UTF-8"> 
- 
-<div ng-app="myApp" ng-controller="customersCtrl"> 
-
-<h1>ORDERS3</h1>
-
-<div> filter
-<input type="text" ng-model="filter0">
-</div>
-
-<ol>
-  <li ng-repeat="x in orders | filter:filter0  ">
-    {{ '#'+ x.id + '. date: ' + x.dateAndTime+ '.  addr: ' + x.addr1}}
-  </li>
-</ol>
-
-<div> {{resp}} </div>
-
-<div style="color:red"> <h2> {{respError}} </h2> </div>
-
-</div>
 
 <script>
 var app = angular.module('myApp', []);
 app.controller('customersCtrl', function($scope, $http) {
   $http.get('rest/taxiservice/orders')
-  .then(function (response) {
-
+  .success(function (response) {
   $scope.orders = response.orders;
-  $scope.resp   = response;
-
-}, function(response){
-$scope.respError   = 'Network Error. Cant connect to the TAXIWEBSERVICE server.' ;
-});});
+  $scope.resp = response;
+	});});
 </script>
+
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+	padding: 5px;
+}
+table th {
+  background-color: #f1f1f1;
+}
+</style>
+</head>
+
+<body>
+
+<div ng-app="myApp" ng-controller="customersCtrl"> 
+
+<h1>ORDERS</h1>
+
+<div> filter
+<input type="text" ng-model="filter0">
+</div>
+
+<table>
+<tr>
+<th></th>
+<th>id</th>
+<th>dateAndTime</th>
+<th>addr1</th>
+<th>addr2</th>
+<th>Distance</th>
+<th>Order cost</th>
+<th>customerPhone</th>
+<th>customerName</th>
+<th>carNumber</th>
+<th>carDriver</th>
+<th>isDone</th>
+</tr>
+<tr ng-repeat="xx in orders | filter:filter0  ">
+<td>{{$index + 1 }}</td>
+<td>{{xx.id}}</td>
+<td>{{xx.dateAndTime}}</td>
+<td>{{xx.addr1}}</td>
+<td>{{xx.addr2}}</td>
+<td>{{xx.distance}}</td>
+<td>{{xx.orderCost}}</td>
+<td>{{xx.customerPhone}}</td>
+<td>{{xx.customerName}}</td>
+<td>{{xx.carNumber}}</td>
+<td>{{xx.carDriver}}</td>
+<td>{{xx.isDone}}</td>
+</tr>
+
+</table>
+<p>----</p>
+<div><p> Full json data responce:
+<p> {{resp}} </div>
+
+<div style="color:red"> <h2> {{respError}} </h2> </div>
+
+</div>
+
+<div> This page use AngularJS 1.4.5</div>
+
+
+
 
 </body>
 </html>

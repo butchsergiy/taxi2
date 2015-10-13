@@ -28,11 +28,14 @@ import com.google.gson.GsonBuilder;
 
 /*
  * Controller for /taxiservice 
+ * 
+ * http://127.0.0.1:8080/TaxiWebService2/TaxiServiceClient.html
+ * 
  */
-@Path("/taxiservice")			// for url - http://127.0.0.1:8080/taxi2/rest/taxiservice/status
+@Path("/taxiservice")			
 public class TaxiService {
 
-	
+//	for url - http://127.0.0.1:8080/taxi2/rest/taxiservice/status
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("status")
@@ -41,7 +44,7 @@ public class TaxiService {
 	}
 	
 	
-	// WORKS---
+	// WORKS---  
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
